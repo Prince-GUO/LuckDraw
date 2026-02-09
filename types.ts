@@ -10,7 +10,7 @@ export interface Award {
   name: string;
   count: number;
   batchSize?: number; // Number of people to draw per round
-  image?: string;
+  images?: string[]; // Support multiple prize images
   winners: Member[];
 }
 

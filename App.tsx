@@ -8,7 +8,6 @@ import { MusicPlayer } from './components/MusicPlayer';
 
 const initialNames = Array.from({ length: 88 }, (_, i) => (i + 1).toString().padStart(2, '0'));
 
-// 用户提供的粒子马背景图片
 const DEFAULT_BG_IMAGE = "https://img.js.design/assets/static/f505492d6e3c5093557e0500d07521c7"; 
 
 const App: React.FC = () => {
@@ -19,11 +18,29 @@ const App: React.FC = () => {
     }))
   );
   
-  // 按照要求配置奖项
   const [awards, setAwards] = useState<Award[]>([
-    { id: '3', name: '三等奖 · 龙马精神', count: 10, batchSize: 3, winners: [] }, // 3-3-4 逻辑在 UI 处理
-    { id: '2', name: '二等奖 · 骏马奔腾', count: 6, batchSize: 2, winners: [] },  // 一次2个，抽3轮
-    { id: '1', name: '一等奖 · 马到成功', count: 3, batchSize: 1, winners: [] }   // 一次1个，抽3轮
+    { 
+      id: '3', 
+      name: '三等奖 · 龙马精神', 
+      count: 10, 
+      batchSize: 3, // 分三轮：3 -> 3 -> 4
+      winners: [], 
+      images: [] // 去掉默认奖品图，由用户在后台自行上传
+    },
+    { 
+      id: '2', 
+      name: '二等奖 · 骏马奔腾', 
+      count: 6, 
+      batchSize: 2, // 每轮2人，分三轮
+      winners: [] 
+    },
+    { 
+      id: '1', 
+      name: '一等奖 · 马到成功', 
+      count: 3, 
+      batchSize: 1, // 每轮1人，分三轮
+      winners: [] 
+    }
   ]);
   
   const [currentAwardIndex, setCurrentAwardIndex] = useState(0);
@@ -188,7 +205,6 @@ const App: React.FC = () => {
         seekTime={seekTo}
       />
       
-      {/* 顶部标题装饰 */}
       <div className="absolute top-3 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-[50] pointer-events-none drop-shadow-2xl">
         <div className="flex items-center gap-6 bg-gradient-to-r from-transparent via-red-600/40 to-transparent backdrop-blur-md px-12 py-2 rounded-full border-y border-yellow-500/20">
           <div className="flex items-center gap-4 text-4xl font-bold font-chinese bg-gradient-to-b from-yellow-100 to-yellow-500 bg-clip-text text-transparent leading-none">
