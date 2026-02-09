@@ -23,23 +23,25 @@ const App: React.FC = () => {
       id: '3', 
       name: '三等奖 · 龙马精神', 
       count: 10, 
-      batchSize: 3, // 分三轮：3 -> 3 -> 4
+      batchSize: 3, 
       winners: [], 
-      images: [] // 去掉默认奖品图，由用户在后台自行上传
+      images: [] 
     },
     { 
       id: '2', 
       name: '二等奖 · 骏马奔腾', 
       count: 6, 
-      batchSize: 2, // 每轮2人，分三轮
-      winners: [] 
+      batchSize: 2, 
+      winners: [],
+      images: []
     },
     { 
       id: '1', 
       name: '一等奖 · 马到成功', 
       count: 3, 
-      batchSize: 1, // 每轮1人，分三轮
-      winners: [] 
+      batchSize: 1, 
+      winners: [],
+      images: []
     }
   ]);
   
@@ -212,7 +214,7 @@ const App: React.FC = () => {
             <div className="w-10 h-10 flex items-center justify-center">
               <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-b from-yellow-100 to-yellow-600 drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
             </div>
-            <span className="tracking-[0.4rem]">马上添福</span>
+            <span className="tracking-[0.4rem]">馬上添福</span>
           </div>
         </div>
       </div>

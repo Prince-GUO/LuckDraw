@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Award, AppState, Member } from '../types';
-import { Trophy, ChevronLeft, ChevronRight, Play, Pause, Square, Settings, Award as AwardIcon, X as CloseIcon, Trash2, Star, Music, Volume2, VolumeX, Sparkles } from 'lucide-react';
+import { Trophy, ChevronLeft, ChevronRight, Play, Pause, Square, Settings, Award as AwardIcon, X as CloseIcon, Trash2, Star, Music, Volume2, VolumeX, Sparkles, Gift } from 'lucide-react';
 
 // GoldBrick3D component providing a realistic 3D golden ingot/brick appearance.
 interface GoldBrick3DProps {
@@ -116,7 +117,6 @@ const RollingNameWall = React.memo(({ members }: { members: Member[] }) => {
             const phi = Math.acos(-1 + (2 * i) / total);
             const theta = Math.sqrt(total * Math.PI) * phi;
             const rotateY = (theta * 180) / Math.PI;
-            // Fix: Property 'state' does not exist on type 'Math'. Correcting yOffset calculation.
             const yOffset = radius * Math.cos(phi) * yScale;
             const horizontalRadius = radius * Math.sin(phi);
             return {
@@ -251,14 +251,21 @@ export const LuckyDrawUI: React.FC<Props> = ({
                     <Sparkles size={18} className="animate-pulse" />
                     <span className="font-chinese text-xl tracking-[0.2em]">奖品展示（任选其一）</span>
                   </div>
-                  <div className="flex justify-center gap-6 w-full max-w-3xl">
+                  <div className="flex justify-center gap-6 w-full max-w-4xl flex-wrap">
                     {award.images.map((img, idx) => (
                       <div key={idx} className="group relative">
                          <div className="absolute -inset-1.5 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-xl blur opacity-20 group-hover:opacity-60 transition duration-700"></div>
-                         <div className="relative w-48 h-48 bg-white rounded-xl overflow-hidden border border-yellow-500/50 shadow-2xl transition-transform group-hover:scale-105 duration-500">
-                           <img src={img} className="w-full h-full object-cover" alt={`奖品 ${idx + 1}`} />
-                           <div className="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur-sm py-1.5 text-center text-yellow-500 font-bold font-chinese tracking-widest text-sm">
-                             选项 {idx + 1}
+                         <div className="relative w-40 h-40 bg-red-900/40 rounded-xl overflow-hidden border border-yellow-500/30 shadow-2xl transition-transform group-hover:scale-105 duration-500 flex items-center justify-center">
+                           <img 
+                            src={img} 
+                            className="w-full h-full object-cover" 
+                            alt={`奖品 ${idx + 1}`} 
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = 'data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpolyline points="20 12 20 22 4 22 4 12"/%3E%3Crect x="2" y="7" width="20" height="5"/%3E%3Cline x1="12" y1="22" x2="12" y2="7"/%3E%3Cpath d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/%3E%3Cpath d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/%3E%3C/svg%3E';
+                            }}
+                           />
+                           <div className="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur-sm py-1 text-center text-yellow-500 font-bold font-chinese tracking-widest text-[10px]">
+                             奖品 {idx + 1}
                            </div>
                          </div>
                       </div>
@@ -278,7 +285,7 @@ export const LuckyDrawUI: React.FC<Props> = ({
                 onClick={() => setAppState(AppState.READY)} 
                 className="px-20 py-3.5 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full font-bold text-red-950 text-2xl shadow-xl hover:scale-110 active:scale-95 transition-all tracking-[0.5rem] font-chinese border-b-4 border-yellow-800"
               >
-                载入史册
+                确认
               </button>
             </div>
           </div>

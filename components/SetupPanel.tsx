@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Member, Award } from '../types';
-import { Upload, Users, Award as AwardIcon, Image as ImageIcon, Music, Play, X, Plus, Volume2, Square, Trash2, Maximize2 } from 'lucide-react';
+import { Upload, Users, Award as AwardIcon, Image as ImageIcon, Music, Play, X, Plus, Volume2, Square, Trash2, Maximize2, Gift } from 'lucide-react';
 import * as XLSX from 'xlsx';
 
 interface Props {
@@ -128,7 +128,7 @@ export const SetupPanel: React.FC<Props> = ({
               <div className="p-6 bg-red-900/20 rounded-2xl border border-red-500/10">
                 <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-yellow-500/80"><Plus size={18} /> 快捷粘贴</h3>
                 <textarea value={pasteText} onChange={(e) => setPasteText(e.target.value)} placeholder="请输入员工姓名，每行一个..." className="w-full h-24 bg-red-950/50 border border-red-500/20 rounded-xl p-3 text-sm focus:outline-none focus:border-yellow-500 resize-none transition-colors" />
-                <button onClick={handlePasteImport} className="mt-2 w-full py-2 bg-red-700 hover:bg-red-600 rounded-lg transition-colors font-medium">确认添加名单</button>
+                <button handlePasteImport={handlePasteImport} className="mt-2 w-full py-2 bg-red-700 hover:bg-red-600 rounded-lg transition-colors font-medium">确认添加名单</button>
               </div>
             </div>
             <div className="p-6 bg-red-900/10 rounded-2xl border border-red-500/5">
@@ -147,10 +147,17 @@ export const SetupPanel: React.FC<Props> = ({
           <div className="space-y-4">
             {awards.map((award) => (
               <div key={award.id} className="p-5 bg-red-900/20 rounded-2xl border border-red-500/10 flex items-center gap-6 group hover:border-red-500/30 transition-all">
-                <div className="flex flex-wrap gap-2 max-w-[200px]">
+                <div className="flex flex-wrap gap-2 min-w-[140px] max-w-[240px]">
                   {(award.images || []).map((img, idx) => (
                     <div key={idx} className="w-16 h-16 bg-red-800/40 rounded-xl flex items-center justify-center overflow-hidden border border-red-500/20 relative group/img">
-                        <img src={img} className="w-full h-full object-cover" alt="奖品图" />
+                        <img 
+                          src={img} 
+                          className="w-full h-full object-cover" 
+                          alt="奖品图" 
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = 'data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpolyline points="20 12 20 22 4 22 4 12"/%3E%3Crect x="2" y="7" width="20" height="5"/%3E%3Cline x1="12" y1="22" x2="12" y2="7"/%3E%3Cpath d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/%3E%3Cpath d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/%3E%3C/svg%3E';
+                          }}
+                        />
                         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center gap-1">
                             <button onClick={() => setEnlargedImage(img)} className="p-1 bg-yellow-500 rounded-full text-red-900"><Maximize2 size={12}/></button>
                             <button onClick={() => removeAwardImage(award.id, idx)} className="p-1 bg-red-600 rounded-full text-white"><Trash2 size={12}/></button>
@@ -215,7 +222,14 @@ export const SetupPanel: React.FC<Props> = ({
         <div className="fixed inset-0 z-[999] flex items-center justify-center p-8">
           <div className="absolute inset-0 bg-black/90 backdrop-blur-md" onClick={() => setEnlargedImage(null)} />
           <div className="relative max-w-4xl max-h-[80vh] bg-white p-2 rounded-xl shadow-[0_0_100px_rgba(0,0,0,0.8)] animate-in zoom-in duration-300">
-            <img src={enlargedImage} className="w-full h-full object-contain rounded-lg animate-fade-in" alt="预览" />
+            <img 
+              src={enlargedImage} 
+              className="w-full h-full object-contain rounded-lg animate-fade-in" 
+              alt="预览" 
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = 'data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpolyline points="20 12 20 22 4 22 4 12"/%3E%3Crect x="2" y="7" width="20" height="5"/%3E%3Cline x1="12" y1="22" x2="12" y2="7"/%3E%3Cpath d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/%3E%3Cpath d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/%3E%3C/svg%3E';
+              }}
+            />
             <button onClick={() => setEnlargedImage(null)} className="absolute -top-4 -right-4 bg-red-600 text-white p-2 rounded-full hover:bg-red-500 transition-colors shadow-xl"><X size={24} /></button>
           </div>
         </div>
